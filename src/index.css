@@ -1,0 +1,348 @@
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Custom scrollbar styles for smooth reels experience */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scroll snap for reel transitions */
+html {
+  scroll-snap-type: y mandatory;
+}
+
+/* Enhanced mobile touch scrolling */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection for better mobile experience */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* App container */
+.app-container {
+  height: 100vh;
+  background-color: black;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Header styles */
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 16px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* Button styles */
+.button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.button-primary {
+  background: linear-gradient(to right, #9333ea, #ec4899);
+  color: white;
+  font-weight: 600;
+  padding: 12px 32px;
+  border-radius: 9999px;
+  transition: all 0.3s;
+  transform: scale(1);
+}
+
+.button-primary:hover {
+  background: linear-gradient(to right, #7c3aed, #db2777);
+  transform: scale(1.05);
+}
+
+.button-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+.button-full {
+  width: 100%;
+}
+
+/* Loading button */
+.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-header {
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Input styles */
+.input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Reels container */
+.reels-container {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.reel-item {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reel-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.7);
+}
+
+.reel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent, rgba(0, 0, 0, 0.3));
+}
+
+.reel-content {
+  position: relative;
+  z-index: 10;
+  padding: 24px;
+  color: white;
+  max-width: 512px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reel-name {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #c084fc, #f9a8d4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reel-sport {
+  font-size: 20px;
+  color: #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.reel-description-box {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.reel-description {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.achievements-title {
+  font-weight: 600;
+  color: #d8b4fe;
+  margin-bottom: 8px;
+}
+
+.achievement-item {
+  font-size: 14px;
+  color: #d1d5db;
+  margin-bottom: 4px;
+}
+
+/* Side indicators */
+.side-indicators {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.indicator {
+  width: 8px;
+  height: 32px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.indicator.active {
+  background-color: white;
+}
+
+.indicator.inactive {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Bottom gradient */
+.bottom-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .reel-name {
+    font-size: 28px;
+  }
+  
+  .reel-sport {
+    font-size: 18px;
+  }
+  
+  .reel-description {
+    font-size: 16px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+}
