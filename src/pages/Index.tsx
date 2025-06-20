@@ -1,8 +1,11 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Plus, Volume2, VolumeX } from 'lucide-react';
-import { fetchCelebrities, generateRandomImage, getTotalPages } from '../services/celebrityApi';
-import { showToast } from '../utils/toast';
+import React, { useState, useEffect, useRef } from "react";
+import { Play, Pause, Plus, Volume2, VolumeX } from "lucide-react";
+import {
+  fetchCelebrities,
+  generateRandomImage,
+  getTotalPages,
+} from "../services/celebrityApi";
+import { showToast } from "../utils/toast";
 
 interface Celebrity {
   id: string;
@@ -14,17 +17,17 @@ interface Celebrity {
 }
 
 const SportsReelsApp = () => {
-  const [celebrities, setCelebrities] = useState<Celebrity[]>([]); 
+  const [celebrities, setCelebrities] = useState<Celebrity[]>([]);
   const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({});
   const [isMuted, setIsMuted] = useState(false);
-  const [newCelebName, setNewCelebName] = useState('');
-  const [newCelebSport, setNewCelebSport] = useState('');
+  const [newCelebName, setNewCelebName] = useState("");
+  const [newCelebSport, setNewCelebSport] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  
+
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,16 +39,16 @@ const SportsReelsApp = () => {
         const initialCelebrities = await fetchCelebrities(1, 3);
         setCelebrities(initialCelebrities);
         setTotalPages(getTotalPages(3));
-        
+
         // Try to load from localStorage as well
-        const stored = localStorage.getItem('sportsReels');
+        const stored = localStorage.getItem("sportsReels");
         if (stored) {
           const storedCelebs = JSON.parse(stored);
-          setCelebrities(prev => [...prev, ...storedCelebs]);
+          setCelebrities((prev) => [...prev, ...storedCelebs]);
         }
       } catch (error) {
-        console.error('Error loading celebrities:', error);
-        showToast('Error loading celebrities', 'error');
+        console.error("Error loading celebrities:", error);
+        showToast("Error loading celebrities", "error");
       } finally {
         setIsLoading(false);
       }
@@ -56,9 +59,11 @@ const SportsReelsApp = () => {
 
   // Save custom celebrities to localStorage
   useEffect(() => {
-    const customCelebrities = celebrities.filter(celeb => celeb.id.startsWith('custom-'));
+    const customCelebrities = celebrities.filter((celeb) =>
+      celeb.id.startsWith("custom-")
+    );
     if (customCelebrities.length > 0) {
-      localStorage.setItem('sportsReels', JSON.stringify(customCelebrities));
+      localStorage.setItem("sportsReels", JSON.stringify(customCelebrities));
     }
   }, [celebrities]);
 
@@ -70,53 +75,55 @@ const SportsReelsApp = () => {
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const itemHeight = window.innerHeight;
-      const newIndex = Math.round(scrollTop / itemHeight); 
+      const newIndex = Math.round(scrollTop / itemHeight);
 
       // Load more data when approaching the end
-      if (newIndex >= celebrities.length - 2 && currentPage < totalPages && !isLoadingMore) {
+      if (
+        newIndex >= celebrities.length - 2 &&
+        currentPage < totalPages &&
+        !isLoadingMore
+      ) {
         loadMoreCelebrities();
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, [celebrities.length, currentPage, totalPages, isLoadingMore]);
 
   const loadMoreCelebrities = async () => {
     if (isLoadingMore || currentPage >= totalPages) return;
-    
+
     setIsLoadingMore(true);
     try {
       const nextPage = currentPage + 1;
       const newCelebrities = await fetchCelebrities(nextPage, 3);
-      setCelebrities(prev => [...prev, ...newCelebrities]);
+      setCelebrities((prev) => [...prev, ...newCelebrities]);
       setCurrentPage(nextPage);
     } catch (error) {
-      console.error('Error loading more celebrities:', error);
-      showToast('Error loading more celebrities', 'error');
+      console.error("Error loading more celebrities:", error);
+      showToast("Error loading more celebrities", "error");
     } finally {
       setIsLoadingMore(false);
     }
   };
-
-
 
   const generateDescription = (name: string, sport: string) => {
     const templates = [
       `${name} is a legendary ${sport} athlete known for their exceptional skill and dedication to the sport.`,
       `Meet ${name}, one of the most celebrated names in ${sport} history.`,
       `${name} has made significant contributions to ${sport} and continues to inspire athletes worldwide.`,
-      `A true champion in ${sport}, ${name} represents excellence and perseverance.`
+      `A true champion in ${sport}, ${name} represents excellence and perseverance.`,
     ];
     return templates[Math.floor(Math.random() * templates.length)];
   };
 
   const speakText = (text: string, celebrityId: string) => {
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
-      
+
       if (isPlaying[celebrityId]) {
-        setIsPlaying(prev => ({ ...prev, [celebrityId]: false }));
+        setIsPlaying((prev) => ({ ...prev, [celebrityId]: false }));
         return;
       }
 
@@ -124,15 +131,15 @@ const SportsReelsApp = () => {
       utterance.rate = 0.9;
       utterance.pitch = 1;
       utterance.volume = isMuted ? 0 : 1;
-      
+
       utterance.onstart = () => {
-        setIsPlaying(prev => ({ ...prev, [celebrityId]: true }));
+        setIsPlaying((prev) => ({ ...prev, [celebrityId]: true }));
       };
-      
+
       utterance.onend = () => {
-        setIsPlaying(prev => ({ ...prev, [celebrityId]: false }));
+        setIsPlaying((prev) => ({ ...prev, [celebrityId]: false }));
       };
-      
+
       speechRef.current = utterance;
       window.speechSynthesis.speak(utterance);
     }
@@ -140,27 +147,34 @@ const SportsReelsApp = () => {
 
   const addNewCelebrity = async () => {
     if (!newCelebName.trim() || !newCelebSport.trim()) {
-      showToast('Please fill in all fields', 'error');
+      showToast("Please fill in all fields", "error");
       return;
     }
 
     setIsLoading(true);
-    
+
     const newCelebrity: Celebrity = {
       id: `custom-${Date.now()}`,
       name: newCelebName.trim(),
       sport: newCelebSport.trim(),
-      description: generateDescription(newCelebName.trim(), newCelebSport.trim()),
+      description: generateDescription(
+        newCelebName.trim(),
+        newCelebSport.trim()
+      ),
       imageUrl: generateRandomImage(),
-      achievements: [`Professional ${newCelebSport.trim()} player`, 'Multiple championships', 'Sports icon']
+      achievements: [
+        `Professional ${newCelebSport.trim()} player`,
+        "Multiple championships",
+        "Sports icon",
+      ],
     };
 
-    setCelebrities(prev => [...prev, newCelebrity]);
-    setNewCelebName('');
-    setNewCelebSport('');
+    setCelebrities((prev) => [...prev, newCelebrity]);
+    setNewCelebName("");
+    setNewCelebSport("");
     setIsDialogOpen(false);
     setIsLoading(false);
-    
+
     showToast(`${newCelebrity.name} has been added to your reels.`);
   };
 
@@ -173,9 +187,16 @@ const SportsReelsApp = () => {
 
   if (isLoading && celebrities.length === 0) {
     return (
-      <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        className="app-container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <div className="loading-spinner"></div>
-        <span style={{ marginLeft: '12px' }}>Loading celebrities...</span>
+        <span style={{ marginLeft: "12px" }}>Loading celebrities...</span>
       </div>
     );
   }
@@ -187,16 +208,10 @@ const SportsReelsApp = () => {
         <div className="header-content">
           <h1 className="header-title">Sports Reels</h1>
           <div className="header-controls">
-            <button
-              className="button"
-              onClick={toggleMute}
-            >
+            <button className="button" onClick={toggleMute}>
               {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
             </button>
-            <button
-              className="button"
-              onClick={() => setIsDialogOpen(true)}
-            >
+            <button className="button" onClick={() => setIsDialogOpen(true)}>
               <Plus size={20} />
             </button>
           </div>
@@ -223,12 +238,14 @@ const SportsReelsApp = () => {
                 value={newCelebSport}
                 onChange={(e) => setNewCelebSport(e.target.value)}
               />
-              <button 
-                className={`button-primary button-full ${isLoading ? 'loading' : ''}`}
+              <button
+                className={`button-primary button-full ${
+                  isLoading ? "loading" : ""
+                }`}
                 onClick={addNewCelebrity}
                 disabled={isLoading}
               >
-                {isLoading ? 'Adding...' : 'Add Celebrity'}
+                {isLoading ? "Adding..." : "Add Celebrity"}
               </button>
             </div>
           </div>
@@ -236,45 +253,48 @@ const SportsReelsApp = () => {
       )}
 
       {/* Reels Container */}
-      <div 
-        ref={containerRef}
-        className="reels-container scrollbar-hide"
-      >
+      <div ref={containerRef} className="reels-container scrollbar-hide">
         {celebrities.map((celebrity, index) => (
-          <div
-            key={celebrity.id}
-            className="reel-item"
-          >
-            {/* Background Image */}
-            <div 
+          <div key={celebrity.id} className="reel-item"> 
+            <video
               className="reel-background"
-              style={{ 
-                backgroundImage: `url(${celebrity.imageUrl})`
+              src={celebrity.imageUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover", 
               }}
             />
-            
+
             {/* Gradient Overlay */}
             <div className="reel-overlay" />
-            
+
             {/* Content */}
             <div className="reel-content">
               <div>
-                <h2 className="reel-name">
-                  {celebrity.name}
-                </h2>
+                <h2 className="reel-name">{celebrity.name}</h2>
                 <p className="reel-sport">{celebrity.sport}</p>
-                
+
                 <div className="reel-description-box">
                   <p className="reel-description">{celebrity.description}</p>
-                  
+
                   <div>
                     <h3 className="achievements-title">Key Achievements:</h3>
                     {celebrity.achievements.map((achievement, i) => (
-                      <p key={i} className="achievement-item">• {achievement}</p>
+                      <p key={i} className="achievement-item">
+                        • {achievement}
+                      </p>
                     ))}
                   </div>
                 </div>
-                
+
                 <button
                   className="button-primary"
                   onClick={() => speakText(celebrity.description, celebrity.id)}
@@ -282,12 +302,12 @@ const SportsReelsApp = () => {
                 >
                   {isPlaying[celebrity.id] ? (
                     <>
-                      <Pause style={{ marginRight: '8px' }} size={20} />
+                      <Pause style={{ marginRight: "8px" }} size={20} />
                       Stop Narration
                     </>
                   ) : (
                     <>
-                      <Play style={{ marginRight: '8px' }} size={20} />
+                      <Play style={{ marginRight: "8px" }} size={20} />
                       Play Narration
                     </>
                   )}
@@ -300,18 +320,25 @@ const SportsReelsApp = () => {
               {celebrities.map((_, i) => (
                 <div
                   key={i}
-                  className={`indicator ${i === index ? 'active' : 'inactive'}`}
+                  className={`indicator ${i === index ? "active" : "inactive"}`}
                 />
               ))}
             </div>
           </div>
         ))}
-        
+
         {/* Loading more indicator */}
         {isLoadingMore && (
-          <div className="reel-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div
+            className="reel-item"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <div className="loading-spinner"></div>
-            <span style={{ marginLeft: '12px' }}>Loading more...</span>
+            <span style={{ marginLeft: "12px" }}>Loading more...</span>
           </div>
         )}
       </div>
