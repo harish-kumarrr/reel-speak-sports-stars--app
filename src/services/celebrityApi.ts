@@ -1,4 +1,5 @@
 import sportsStars from "./sports_stars_100.json"
+import sportImages from "./sports_videos_20.json"
 interface Celebrity {
   id: string;
   name: string;
@@ -23,31 +24,7 @@ const generateDescription = (name: string, sport: string): string => {
 };
 
 export const generateRandomImage = () => {
-  const sportImages = [ 
- "https://videos.pexels.com/video-files/3125907/3125907-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/3192198/3192198-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/852038/852038-hd_1920_1080_30fps.mp4",
- "https://videos.pexels.com/video-files/2249402/2249402-uhd_2560_1440_24fps.mp4",
- "https://videos.pexels.com/video-files/2932301/2932301-uhd_2732_1440_24fps.mp4",
- "https://videos.pexels.com/video-files/854169/854169-hd_1920_1080_25fps.mp4",
- "https://videos.pexels.com/video-files/1585618/1585618-hd_1280_720_30fps.mp4",
- "https://videos.pexels.com/video-files/4438080/4438080-hd_1920_1080_25fps.mp4",
- "https://videos.pexels.com/video-files/854877/854877-hd_1920_1080_25fps.mp4",
- "https://videos.pexels.com/video-files/856132/856132-hd_1920_1080_30fps.mp4",
- "https://videos.pexels.com/video-files/992592/992592-hd_1920_1080_25fps.mp4",
- "https://videos.pexels.com/video-files/854878/854878-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/3196564/3196564-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/2657261/2657261-uhd_2560_1440_24fps.mp4",
- "https://videos.pexels.com/video-files/992695/992695-hd_1920_1080_25fps.mp4",
- "https://videos.pexels.com/video-files/2430839/2430839-uhd_2560_1440_24fps.mp4",
- "https://videos.pexels.com/video-files/3192082/3192082-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/3196428/3196428-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/4761738/4761738-uhd_2732_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/2938865/2938865-uhd_2732_1440_24fps.mp4",
- "https://videos.pexels.com/video-files/856188/856188-hd_1920_1080_30fps.mp4",
- "https://videos.pexels.com/video-files/3196221/3196221-uhd_2560_1440_25fps.mp4",
- "https://videos.pexels.com/video-files/2675510/2675510-hd_1920_1080_24fps.mp4"
-  ];
+
   return sportImages[Math.floor(Math.random() * sportImages.length)];
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Play, Pause, Plus, Volume2, VolumeX } from "lucide-react";
 import {
   fetchCelebrities,
