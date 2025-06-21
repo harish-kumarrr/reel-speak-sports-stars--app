@@ -1,11 +1,11 @@
 import sportsStars from "./sports_stars_100.json"
-import sportImages from "./sports_videos_20.json"
+import sportVideo from "./sports_videos_20.json"
 interface Celebrity {
   id: string;
   name: string;
   sport: string;
   description: string;
-  imageUrl: string;
+  videoUrl: string;
   achievements: string[];
 }
 
@@ -23,9 +23,9 @@ const generateDescription = (name: string, sport: string): string => {
   return templates[Math.floor(Math.random() * templates.length)];
 };
 
-export const generateRandomImage = () => {
+export const generateRandomVideo = () => {
 
-  return sportImages[Math.floor(Math.random() * sportImages.length)];
+  return sportVideo[Math.floor(Math.random() * sportVideo.length)];
 };
 
 export const fetchCelebrities = async (
@@ -44,7 +44,7 @@ export const fetchCelebrities = async (
     name: celeb.name,
     sport: celeb.sport,
     description: generateDescription(celeb.name, celeb.sport),
-    imageUrl: generateRandomImage(),
+    videoUrl: generateRandomVideo(),
     achievements: celeb.achievements,
   }));
 };

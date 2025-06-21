@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Play, Pause, Plus, Volume2, VolumeX } from "lucide-react";
 import {
   fetchCelebrities,
-  generateRandomImage,
+  generateRandomVideo,
   getTotalPages,
 } from "../services/celebrityApi";
 import { showToast } from "../utils/toast";
@@ -12,7 +12,7 @@ interface Celebrity {
   name: string;
   sport: string;
   description: string;
-  imageUrl: string;
+  videoUrl: string;
   achievements: string[];
 }
 
@@ -161,7 +161,7 @@ const SportsReelsApp = () => {
         newCelebName.trim(),
         newCelebSport.trim()
       ),
-      imageUrl: generateRandomImage(),
+      videoUrl: generateRandomVideo(),
       achievements: [
         `Professional ${newCelebSport.trim()} player`,
         "Multiple championships",
@@ -258,7 +258,7 @@ const SportsReelsApp = () => {
           <div key={celebrity.id} className="reel-item"> 
             <video
               className="reel-background"
-              src={celebrity.imageUrl}
+              src={celebrity.videoUrl}
               autoPlay
               loop
               muted
